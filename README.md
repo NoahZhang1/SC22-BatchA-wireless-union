@@ -52,60 +52,47 @@ Here provides three ways of quick-start. Before that,
 
 
 #### Load from 🤗transformers models 
-Now there are [two fine-tuned models](https://huggingface.co/models?search=congcongwang) uploded to 🤗transformers models library. They can be used easily as long as you `pip install transformers`
+Now there are [two fine-tuned models](https://huggingface.co/models?search=congcongwang) uploded to 🤗transformers models library. They can be used easily as long as you `pip install aitextgen`
+`pip install transformer`
 
 
 ```python
-from transformers import AutoTokenizer,AutoModelWithLMHead
-tokenizer = AutoTokenizer.from_pretrained("congcongwang/gpt2_medium_fine_tuned_coder")
-model = AutoModelWithLMHead.from_pretrained("congcongwang/gpt2_medium_fine_tuned_coder")
-# or
-# tokenizer = AutoTokenizer.from_pretrained("congcongwang/distilgpt2_fine_tuned_coder")
-# model = AutoModelWithLMHead.from_pretrained("congcongwang/distilgpt2_fine_tuned_coder")
-use_cuda=True
-context="def factorial"
-lang="python" # can be java as well.
+# import stuff for our web server
+from flask import Flask, request, redirect, url_for, render_template, session
+from utils import get_base_url
+# import stuff for our models
+from aitextgen import aitextgen
+from transformers import PreTrainedTokenizerFast, GPT2DoubleHeadsModel, GPT2TokenizerFast, GPT2Tokenizer
 
-if use_cuda:
-    model.to("cuda")
 
-input_ids = tokenizer.encode("<python> " + context,
-                                     return_tensors='pt') if lang == "python" else tokenizer.encode(
-            "<java> " + context, return_tensors='pt')
-outputs = model.generate(input_ids=input_ids.to("cuda") if use_cuda else input_ids,
-                         max_length=128,
-                         temperature=0.7,
-                         num_return_sequences=1)
+def load_model(model_path):
+    model = GPT2DoubleHeadsModel.from_pretrained(model_path)
+    return model
 
-decoded = tokenizer.decode(outputs[0], skip_special_tokens=True)
-print(decoded)
+
+def load_tokenizer(tokenizer_path):
+    tokenizer = GPT2Tokenizer.from_pretrained(tokenizer_path)
+    return tokenizer
+
+#For generating language from any existing model
+def GenAI_JS(): 
+
+    model = load_model("model/js")
+    tokenizer = load_tokenizer("model/js")
+    if prompt is not None:
+        generated = model.generate(
+            ids,
+            do_sample=True,
+            max_length=150,
+            pad_token_id=model.config.eos_token_id,
+            top_k=50,
+            top_p=0.95,
+            return_as_list=True
+        )
+    generated = tokenizer.decode(generated[0], skip_special_tokens=True)
 ```
 
 
-
-#### Ready-to-go Interaction
-```
-git clone https://github.com/wangcongcong123/auto_coding.git
-pip install -r requirements.txt
-```
-
-1. Download the fine-tuned models, here are two versions provided.
-    * [distilgpt2_fine_tuned_coder (params: 82M, size: 291MB)](https://ucdcs-student.ucd.ie/~cwang/autocoder/distilgpt2_fine_tuned_coder.zip)
-    * [gpt2_medium_fine_tuned_coder.zip (params: 345M, size: 1.22GB)](https://ucdcs-student.ucd.ie/~cwang/autocoder/gpt2_medium_fine_tuned_coder.zip)
-2. Unzip the model and move it to `./model` (create it first)
-3. Run the interact: `python interact.py`
-
-#### Fine-tuning yours
-```
-git clone <this repository>
-pip install -r requirements.txt
-```
-
-1. Preparing [the dataset](./dataset)
-2. Start fine-tuning model: `python train.py --model_select distilgpt2` 
-3. After fine-tuning, the model will be saved to `./model/distilgpt2_fine_tuned_coder/0_GPTSingleHead` which is exactly the fine-tuned version as provided in Ready-to-go Interaction.
-
-\* For more params setting of training, `python train.py -h`
 
 ### Generative examples
 Good Python generation examples by fine-tuned GPT2-medium
