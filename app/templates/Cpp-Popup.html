@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<meta name="description" content="" />
+		<meta name="author" content="" />
+		<title>Wireless Wingman Project:Copilot-Inspired Generator.</title>
+		<link rel="icon" type="image/png" href="static/img/AI_Images/Wireless_Union_Copilot_logo.png" />
+		<!-- Font Awesome icons (free version)-->
+		<script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" crossorigin="anonymous"></script>
+		<!-- Simple line icons-->
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.5.5/css/simple-line-icons.min.css" rel="stylesheet" />
+		<!-- Google fonts-->
+		<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css" />
+		<!-- JQUERY -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+		<script class="u-script" type="text/javascript" src="{{ url_for('static', filename='js/jQuery.js') }}" defer=""></script>
+		<!-- Core theme CSS (includes Bootstrap)-->
+		<!--<link href="{{ url_for('static',filename='/css/styles.css') }}" rel="stylesheet" />-->
+		<link href="static/css/styles.css" rel="stylesheet" />
+		<link href="test.css" type="text/css" rel="stylesheet">
+    <!-- Links google font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kdam+Thmor+Pro&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+	</head>
+	<body id="page-top">
+		<!-- Navigation-->
+			<a class="menu-toggle rounded" href="#"><i class="fas fa-bars"></i></a>
+			<nav id="sidebar-wrapper">
+			    <ul class="sidebar-nav">
+			      <li class="sidebar-brand"><a href={{ url_for('home')}}>Wireless Wingman</a></li>
+			      <li class="sidebar-nav-item"><a href={{ url_for('home')}}>Home </a></li>
+			      <li class="sidebar-nav-item"><a href="https://github.com/Mindstormer314/AI-Camp-Data">Our Github</a></li>
+            <li class = "sidebar-nav-item"><a href = "https://drive.google.com/drive/folders/1-H_AeVwm7lJxVTs-c4kwzRtMvXlNGUTC?usp=sharing">Our AI Models</a></li>
+			      <li class="sidebar-nav-item"><a href="https://www.ai-camp.org">AI Camp</a></li>
+            <li class="sidebar-nav-item"><a href={{url_for('team')}}>Introducing our Amazing team!</a></li>
+			    </ul>
+			</nav>
+		<!-- Top half of page-->
+		<header class="masthead d-flex align-items-right" style="background: linear-gradient(to top, #0c7494, #16384d); padding-left: 20%">
+			<div class="container px-4 px-lg-5 text-center">
+				<div class="container-fluid ">
+					<h1 class="mb-1 text-primary">Wireless Wingman</h1>
+					<h3 class="mb-5 text-light undertext"><em>Your Personal Coding Assistant</em></h3>
+					<a class="btn btn-primary btn-xl" >Select an icon on the right to load an AI --></a> <br/>
+<!-- 					<a class="btn btn-primary btn-xl" href={{ url_for('results')}}>CLICK HERE TO DEBUG MODEL FOR C LANGUAGE</a> <br/> -->
+				</div>
+			</div>
+			<!-- For some reason, the popups will not work with the external CSS file-->
+			<style>
+				.modal{
+          position: absolute; 
+          margin: auto; 
+          padding: 20px 30px;
+          display: flex; 
+          align-items: center;
+          justify-content: center;
+          transition: all 0.4s;
+          visibility: hidden;
+          opacity: 0;
+				}
+				.modal_content{
+          width: 100%;
+          max-width: 100%; 
+          height: 700px;
+          border-radius: 5px; 
+          border-style: solid;
+          border-width: 3px; 
+				}
+        .c_modal{
+          background-image: linear-gradient(#779AD0, #335A99, #264481);
+        }
+        .cpp_modal{
+          background-image: linear-gradient(#779AD0, #335A99, #264481);
+        }
+        .csharp_modal{
+          background-image: linear-gradient(#b69bde, #4c1f91);
+        }
+        .python_modal{
+          background-image: linear-gradient(to bottom right, #4E73A3, #F5D653);
+        }
+        .java_modal{
+          background-image: linear-gradient(#f2bb85, #f5c78c);
+        }
+        .js_modal{
+          background-image: linear-gradient(#e8e084, #ded99e)
+        }
+				.modal{
+          visibility: visible; 
+          opacity: 1; 
+          text-align: center; 
+				}
+				.button {
+          font: bold 11px Arial;
+          text-decoration: none;
+          background-color: #f54242;
+          padding: 2px 6px 2px 6px;
+          border-top: 1px solid #CCCCCC;
+          border-right: 1px solid #333333;
+          border-bottom: 1px solid #333333;
+          border-left: 1px solid #CCCCCC;
+          display: inline-block; 
+          align-items: center;
+          justify-content: center; 
+          width: 24%;     
+          position: relative;
+          bottom: 450px; 
+          left: -37%;
+          opacity: 0.9;
+          
+				}
+        .close-btn:hover{
+          background-color: #f54242;
+          opacity: 1;
+        }
+        .x-symbol{
+          font-size: 30px; 
+          display: inline-block;
+          position: relative;
+          top: 3px;
+        }
+        .close-text{
+          font-size: 20px;
+          display: inline-block;
+        }
+        .open-button {
+          background-color: #555;
+          color: white;
+          padding: 16px 20px;
+          border: none;
+          cursor: pointer;
+          opacity: 0.8;
+          position: fixed;
+          bottom: 23px;
+          right: 28px;
+          width: 280px;
+        }
+
+        /* Add styles to the form container */
+        .form-container {
+          padding: 20px;
+          padding-right: 50px;
+          border-radius: 5px;
+        }
+
+        /* Full-width input fields */
+        .form-container input[type=text] {
+          padding: 30px;
+          margin: 5px 0 22px 0;
+          border: none;
+          background: #f1f1f1;
+        }
+        
+        /* Add a red background color to the cancel button */
+        .form-container .cancel {
+          background-color: rgb(224, 47, 41);
+
+          border-radius: 7px
+        }
+
+        /* Add some hover effects to buttons */
+        .form-container .generate-btn:hover, .open-button:hover {
+          opacity: 0.9;
+        }
+
+        .output-part {
+          color: red;
+          position: absolute;
+
+          right: 300px;
+          top: 250px;
+        }
+
+        .result-box {
+            border-radius: 5px;
+          
+        }
+        /*Prompt Box*/
+        .prompt-title{
+          color: black;
+          font-weight: bold; 
+          display: flex; 
+          justify-content: flex-start;
+        }
+        /*Input text Box*/
+        .form-control-lg{
+          background-color: #999696; 
+          width: 500px; /*Instead of using html (row and col atribute) to change the size of the text field, its prob better to use css to change the size */ 
+          height: 275px; 
+          display: flex; 
+          justify-content: flex-end;
+          position: relative;
+          bottom: 40px;
+        }
+        
+        .form-control-out {
+          background-color: #999696; 
+          width: 500px;  
+          height: 275px; 
+          display: flex; 
+          justify-content: flex-end;
+          position: relative;
+          bottom: 40px;
+          
+        }
+        
+        .Output{
+          position: relative;
+          top: -350px;
+          right: -750px;
+        }
+        
+        .description{
+          position: relative; 
+          width: 1250px;
+          text-align: left;
+          font-size: 20px; 
+          font-family: 'Kdam Thmor Pro', sans-serif;
+          z-index: 2; 
+          
+          
+        }
+        /*
+        .generate-btn{
+          position: absolute;
+          left: 55px;
+          top: 680px;
+          
+          width: 24%;
+          padding: 4px;
+        }
+        */
+        .generate-btn{
+          position:relative;
+          display:block;
+          color: black;
+          background: #999696;
+          font-size: 25px; 
+          text-orientation: none; 
+          margin: 30px 0; 
+          padding: 14px 60px; 
+          text-transform: uppercase;
+          overflow: hidden; 
+          transition: 1s all ease; 
+          bottom: 375px;
+          
+        }
+        .generate-btn::before{
+          background: #5a89c7;
+          content: "";
+          width: 100%;
+          height: 100%;
+          position: absolute; 
+          top: 50%; 
+          left: 50%;
+          transform: translate(-50%, -50%) rotate(45deg); 
+          z-index: -1; 
+          transition: all 0.6s ease; 
+        }
+        .generate-btn:hover::before{
+          height: 280%;
+        }
+        .images{
+          padding: 5px; 
+        }
+        .img{
+          margin: 20px;
+        }
+        .img:hover{
+          background: rgba(73, 245, 116, 0.5); 
+          transform: scale(1.25); 
+          transition: 0.25s ease-out;
+        }
+        
+        #JSLogo{
+          transform: scale(2);
+        }
+        #JSLogo:hover{
+          transform: scale(2.25); 
+          transition: 0.25s ease-out;
+        }
+        .clicked{
+          cursor: wait !important;
+        }
+
+			</style>
+			<!-- Icons for different languages -->
+			<div class = "container-fluid" style = "padding-top: 50px; padding-left: 50px">
+				<div class="images">
+          <a id="open_c" href="#c_modal"><img src = "{{ url_for('static', filename = 'img/AI_Images/CLogo.png')}}" id = "CLogo" class = "col-sm-2 img"></a>
+          <a id="open_cpp" href="#cpp_modal"><img src = "{{ url_for('static', filename = 'img/AI_Images/CPPLogo.png')}}" id = "CppLogo" class = "col-sm-2 img"></a>
+				</div>
+				<div class="images">
+          <a id="open_csharp" href="#csharp_modal"><img src = "{{ url_for('static', filename = 'img/AI_Images/CSharpLogo.png')}}" id = "CSLogo" class = "col-sm-2 img"></a>
+          <a id="open_python" href="#python_modal"><img src = "{{ url_for('static', filename = 'img/AI_Images/PythonLogo.png')}}" id = "PyLogo" class = "col-sm-2 img"></a>
+				</div>
+				<div class="images">
+          <a id="open_java" href="#java_modal"><img src = "{{ url_for('static', filename = 'img/AI_Images/JavaLogo.png')}}" id = "JavaLogo" class = "col-sm-2 img"></a>
+					<a id="open_js" href="#js_modal"><img src = "{{ url_for('static', filename = 'img/AI_Images/JavascriptLogo.png')}}" id = "JSLogo" class = "col-sm-2 img"></a>
+				</div>
+			</div>
+		</header>
+    <!-- C++ Modal -->
+    <div class="modal" id="cpp_modal">
+			<div class="modal_content cpp_modal" id="cpp_modal_content">
+				<div class="form-popup" id="newForm">
+					<div class="input-part">
+						<form action={{ url_for('GenAI_Cpp')}} method="POST" source="custom" name="form-1" class = "form-container">
+              <div class = "form_group">
+                <h1 class="popup-title">Cpp AI</h1>
+                <p class="description">
+                   Our C++-trained AI is unique in our batch due to the fact that it was trained purely on a GPT-Neo model, making it a very effective reccommendation system for coding. It was also trained on over twice the amount of data that our Java model was, resulting in it's hightened comparative performance
+                   <br/>
+                  Please enter the start of an algorithm you would like to see the AI mimic, i.e. void createPolynomial() or int bubbleSort(arr):
+                </p>
+                <label for="prompt" class="prompt-title"><b>Prompt:</b></label> <br><br>
+                <textarea class="form-control-lg" placeholder="Please enter your prompt" required="" id="text_gen_input" name="CppInput"></textarea>
+                <div class="Output">
+                  <label for="COutput" class="prompt-title"><b>Output:</b></label> <br><br>
+             <textarea class="form-control-out" placeholder="{{generated}}" required="" id="text_gen_output_C" name="CppOutput" readonly></textarea>
+                </div>
+                <div class="form-group">
+                  <button type="submit" class="btn btn-light generate-btn" id="text_gen_button" name = "text_gen_button">Generate</button>
+                </div> <br><br>
+              </div>
+						</form>
+            <a class="button close-btn btn btn-light" id="close" href= {{ url_for('home')}}><div class="x-symbol">&times;</div> <div class="close-text">Close</div></a>
+					</div>
+          <br>
+          <br>
+					<div class="output-part">
+					</div>
+				</div>
+			</div>
+		</div>
+    <!-- testing: making cursor change to loading image when user clicks on generate -->
+    <script>
+      function change_cursor(name){
+        var id = `${name}_modal_content`;
+        var modal_content = document.getElementById(id);
+        modal_content.classList.add("clicked");
+        console.log("clicked class added")
+      }
+      
+      let request = new XMLHttpRequest();
+      function requestDataC() {
+          URL = "https://cocalc11.ai-camp.dev/85a91a1f-7830-4f61-84a7-098e9120382e/port/12345"
+          console.log("WOWOWOWOW!")
+
+          request.open("GET", URL + "/GenAI_C")
+          request.send()
+          request.onload = () => {
+              console.log(request)
+              if (request.status === 200) {
+                  console.log(String(request.responseText))
+                  document.getElementById("text_gen_output_C").innerHTML = request.responseText
+                  return 1
+              } else {
+                  console.log('error ${request.statue} ${request.statusText}')
+                  return -1
+              }
+          }
+      }
+    </script>
+    <!-- -->
+    
+    
+		<!-- Information on the project-->
+		<section class="content-section bg-primary text-white text-center" id="theproject" style = "background: #046b8c">
+		<div class="container px-4 px-lg-5">
+	  <div class="content-section-heading">
+			<h3 class="text-secondary mb-0">Specs + Features</h3>
+			<h2 class="mb-5">The Project</h2>
+		</div>
+		<div class="row gx-4 gx-lg-5">
+			<!--<div class="col-lg-3 col-md-6 mb-5 mb-lg-0">-->
+			<div class="col-md-6 mb-5 mb-lg-0 specs">
+				<span class="service-icon rounded-circle mx-auto mb-3"><i class="icon-book-open"></i></span>
+				<h4><strong>Model Creation Procedure</strong></h4>
+				<p class="text-faded mb-0" style = "padding-left: 20%; padding-right: 20%">We created 6 separate models, one for each respective programming language(C, C++, C#, Python, Java, and JavaScript), using various models to do so. </p>
+				<br/>
+				<li>GPT-2-DoubleHead (C, Python, JavaScript, Java)</li>
+				<li>DistilGPT (C#)</li>
+				<li>GPT-Neo-125M (C++)</li>
+			</div>
+			<div class="col-md-6 mb-5 mb-lg-0">
+				<span class="service-icon rounded-circle mx-auto mb-3"><i class="icon-note"></i></span>
+				<h4><strong>Recieves and analyses user input</strong></h4>
+				<p class="text-faded mb-0" style = "padding-left: 20%; padding-right: 20%">This project has the ability to take user inputs and use them as prompts to give code based on the algorithm you request. These models were trained on top-of-the notch algorithms, including Binary Search algorithms, Bubble Sort, and Palindrome analysis.</p>
+			</div>
+		</div>
+		<br>
+		<br>
+		<br>
+		<div class="row gx-4 gx-lg-5 specs">
+			<!--<div class="col-lg-3 col-md-6 mb-5 mb-lg-0">-->
+			<div class="col-md-6 mb-5 mb-lg-0 specs">
+				<span class="service-icon rounded-circle mx-auto mb-3"><i class="icon-clock"></i></span>
+				<h4><strong>Saves time during programming</strong></h4>
+				<p class="text-faded mb-0" style = "padding-left: 20%; padding-right: 20%">The ability to reference an AI is an extraordinarily beneficial thing with respect to speed of programming, and referencing this and other AIs can bring about new perspectives to the problem that you could not have come up by yourself.</p>
+				<br/>
+			</div>
+			<div class="col-md-6 mb-5 mb-lg-0 ">
+				<span class="service-icon rounded-circle mx-auto mb-3"><i class="icon-bubble"></i></span>
+				<h4><strong>All Outputs are Completely Unique</strong></h4>
+				<p class="text-faded mb-0" style = "padding-left: 20%; padding-right: 20%">The AIs we created are designed to generate that have never existed before, bypassing the repeated annoyance of tutorials that state the exact same thing on repeat. By creating unique pieces of code, it allows for a perfectly new perspective to be found in the form of code.</p>
+			</div>
+		</div>
+      
+       <section style="margin-left: 80px; margin-right: 80px;" id="team">
+        <header class="bg-primary text-center py-5 mb-4">
+            <div class="container px-4">
+              <h1 class="fw-light text-white">Our Wonderful Team</h1>
+            </div>
+          </header>
+          
+          <!-- Page Content -->
+          <div class="container px-4">
+            <div class="row">
+              <!-- Team Member 1 -->
+              <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-0 shadow">
+<!--                   TODO - Put the image you want to set as avatar under static folder and change the filename to it -->
+                  <img src="{{url_for('static', filename='img/dummy_image.jpg')}}" class="card-img-top" alt="...">
+                  <div class="card-body text-center">
+<!--                     TODO - EDIT THE CONTENT -->
+                    <h5 class="card-title text-black-50 mb-0">dummy the placeholder</h5>
+                    <div class="card-text text-black-50">Briefly introduce your self.</div>
+                    <div class="card-text text-black-50">日本語にも書けるよ</div>
+                    <div class="card-text text-black-50">你可以在这里写中文</div>
+                    <div class="card-text text-black-50">du kannst auch auf deutsch schreiben</div>
+                    <div class="card-text text-black-50">אתה יכול לכתוב גם בגרמנית</div>
+                  </div>
+                </div>
+              </div>
+              <!-- Team Member 2 --> 
+              <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-0 shadow">
+                  <img src="{{url_for('static', filename='img/Robert Selfie1.jpg')}}" style = "" class="card-img-top" alt="...">
+                  <div class="card-body text-center">
+                    <h5 class="card-title text-black-50 mb-0">Robert Schmidt</h5>
+                    <div class="card-text text-black-50">Self-Overview</div>
+                    <div class="card-text text-black-50">Ich habe eine große interesse in Backend-Entwickelung, und es war spaß, alle die AI's zu den Frontend zu verbinden.</div>
+                  </div>
+                </div>
+              </div>
+              <!-- Team Member 3 --> 
+              <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-0 shadow">
+                  <img src="{{url_for('static', filename='img/Ethan_Selfie.png')}}" class="card-img-top" alt="...">
+                  <div class="card-body text-center">
+                    <h5 class="card-title text-black-50 mb-0">Ethan Present</h5>
+                    <div class="card-text text-black-50">Briefly introduce your self.</div>
+                    <div class="card-text text-black-50">日本語にも書けるよ</div>
+                    <div class="card-text text-black-50">你可以在这里写中文</div>
+                  </div>
+                </div>
+              </div>
+              <!-- Team Member 4 --> 
+              <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-0 shadow">
+                  <img src="{{url_for('static', filename='img/dummy_image.jpg')}}" class="card-img-top" alt="...">
+                  <div class="card-body text-center">
+                    <h5 class="card-title text-black-50 mb-0">dummy the placeholder</h5>
+                    <div class="card-text text-black-50">Briefly introduce your self.</div>
+                    <div class="card-text text-black-50">日本語にも書けるよ</div>
+                    <div class="card-text text-black-50">你可以在这里写中文</div>
+                  </div>
+                </div>
+              </div>
+              <!-- Team Member 5 --> 
+              <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-0 shadow">
+                  <img src="{{url_for('static', filename='img/dummy_image.jpg')}}" class="card-img-top" alt="...">
+                  <div class="card-body text-center">
+                    <h5 class="card-title text-black-50 mb-0">dummy the placeholder</h5>
+                    <div class="card-text text-black-50">Briefly introduce your self.</div>
+                    <div class="card-text text-black-50">日本語にも書けるよ</div>
+                    <div class="card-text text-black-50">你可以在这里写中文</div>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </section>
+      
+      
+		<!-- Scroll to Top Button-->
+		<a class="scroll-to-top rounded" href="#page-top"><i class="fas fa-angle-up"></i></a>
+		<!-- TEXTGEN JS-->
+		<script type="text/javascript" src="{{ url_for('static', filename='js/text_gen.js') }}" defer=""></script>
+		<!-- Bootstrap core JS-->
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+		<!-- Core theme JS-->
+		<script src="{{ url_for('static',filename='js/scripts.js') }}"></script>
+	</body>
+</html>
+<div style='text-align:center'></div>
