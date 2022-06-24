@@ -1,104 +1,159 @@
-# Genre based story generator
+# ![](icon.png) AutoCoder
 
-![webpage_intro](https://github.com/aditya2029/genre-storygenerator/blob/main/app/static/img/front_page.jpg)
-![project_description](https://github.com/aditya2029/genre-storygenerator/blob/main/app/static/img/description_proj.jpg)
-![genre](https://github.com/aditya2029/genre-storygenerator/blob/main/app/static/img/genre_page.jpg)
+<a href="/flairNLP/flair/blob/master/CONTRIBUTING.md"><img src="https://camo.githubusercontent.com/8f697c48adc5026cc6d83dd45e42b9b93ee1803c/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f636f6e747269627574696f6e732d77656c636f6d652d627269676874677265656e2e737667" alt="Contributions welcome" data-canonical-src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg" style="max-width:100%;"></a> <a href="https://opensource.org/licenses/apache" rel="nofollow"></a>
 
-### Introduction:
+#### A basic and simple tool for code auto completion, fine-tuned from the pytorch [pre-trained GPT-2 variants](https://huggingface.co/transformers/pretrained_models.html) offered by the awesome [🤗 transformers](https://github.com/huggingface/transformers) library.
 
-In this project, we are generating short stories (100 words) based on the given six genre (drama, thriller, action, superhero, scifi and horror) by fine-tuning GPT-Neo model.
-This model is deployed on cocalc server using flask.
+### Demo
+![demo](demo.gif)
 
-### Dataset:
+### [Play on 🤗HF's Model Hub](https://huggingface.co/congcongwang/gpt2_medium_fine_tuned_coder?text=%3Cpython%3E+def+factorial)👇
 
-The dataset is taken from:
-[six_genre_dataset](https://drive.google.com/file/d/11FgexOt7PWxFnn9TbkMaEYVEo7gkHwkl/view)
-which is the created by Pranav Varedu by combining [Wikipedia movie plots](https://www.kaggle.com/datasets/jrobischon/wikipedia-movie-plots) and scrapping superhero comics data from Wikipedia.
+![](hf_model.png)
 
-This dataset contains over 30,000 stories.
+### Features
+- Write with Python or Java.
 
-### Approach:
+### Blog linked to this project
+- [The details of dataset construction and fine-tuning process](https://wangcongcong123.github.io/AutoCoder/)
 
-For generating the stories, I have fine-tuned the GPT-Neo model which is comparable to GPT-3 but of small size using given dataset.
-I have trained six seperate model for different genres. User will give input (genre and prompt) from the website and the story will be generated based on that.
+### Quick Start
+Here provides three ways of quick-start. Before that,
 
-### Files and Directories:
 
-The architecture of files and directories are as follows:
+#### Load from 🤗transformers models 
+Now there are [two fine-tuned models](https://huggingface.co/models?search=congcongwang) uploded to 🤗transformers models library. They can be used easily as long as you `pip install transformers`
 
-* app/
-	* model/
-		* model_url
-	*	static/
-		*	css/
-		*	img/
-		* js/
-		* favicon.ico	
-	*	templates/
-		*	Write-your-story-with-AI.html
-		*	writer_home.html
-	*	main.py
-	*	requirements.txt
-	*	utils.py
-* code_files/
-	* data_preprocessing.ipynb
-	* model_text_generation.ipynb
-	* training_genre_models.ipynb
-* .gitignore
-* Dockerfile
-* Readme.md
-* config.py
-* entrypoint.sh
-* host_config
-* nginx_host
 
-#### Model:
+```python
+from transformers import AutoTokenizer,AutoModelWithLMHead
+tokenizer = AutoTokenizer.from_pretrained("congcongwang/gpt2_medium_fine_tuned_coder")
+model = AutoModelWithLMHead.from_pretrained("congcongwang/gpt2_medium_fine_tuned_coder")
+# or
+# tokenizer = AutoTokenizer.from_pretrained("congcongwang/distilgpt2_fine_tuned_coder")
+# model = AutoModelWithLMHead.from_pretrained("congcongwang/distilgpt2_fine_tuned_coder")
+use_cuda=True
+context="def factorial"
+lang="python" # can be java as well.
 
-In the model folder, the URL [model weights and config files](https://drive.google.com/drive/folders/1XeHl9RHsJ7HSgfsSGBC1nsfk_Lavk18v?usp=sharing) is given from which you can download the respective files based on the genre. The file directory after this process should look like this:
+if use_cuda:
+    model.to("cuda")
 
-* app/
-	* model/
-		* drama_files/
-			* pytorch_model.bin
-			* config.json
-		* horror_files/
-			* pytorch_model.bin
-			* config.json
-		* thriller_files/
-			* pytorch_model.bin
-			* config.json
-		* superhero_files/
-			* pytorch_model.bin
-			* config.json
-		* scifi_files/
-			* pytorch_model.bin
-			* config.json
-		* action_files/
-			* pytorch_model.bin
-			* config.json
+input_ids = tokenizer.encode("<python> " + context,
+                                     return_tensors='pt') if lang == "python" else tokenizer.encode(
+            "<java> " + context, return_tensors='pt')
+outputs = model.generate(input_ids=input_ids.to("cuda") if use_cuda else input_ids,
+                         max_length=128,
+                         temperature=0.7,
+                         num_return_sequences=1)
 
-#### Static:
+decoded = tokenizer.decode(outputs[0], skip_special_tokens=True)
+print(decoded)
+```
 
-This folder will give you the independency to change HTML templates according to your usecase.
 
-### Running the application:
 
-Make sure to install the dependencies of the following:
+#### Ready-to-go Interaction
+```
+git clone https://github.com/wangcongcong123/auto_coding.git
+pip install -r requirements.txt
+```
 
-* Flask
-* aitextgen
-* pytorch
+1. Download the fine-tuned models, here are two versions provided.
+    * [distilgpt2_fine_tuned_coder (params: 82M, size: 291MB)](https://ucdcs-student.ucd.ie/~cwang/autocoder/distilgpt2_fine_tuned_coder.zip)
+    * [gpt2_medium_fine_tuned_coder.zip (params: 345M, size: 1.22GB)](https://ucdcs-student.ucd.ie/~cwang/autocoder/gpt2_medium_fine_tuned_coder.zip)
+2. Unzip the model and move it to `./model` (create it first)
+3. Run the interact: `python interact.py`
 
-Also install the packages given is **requirements.txt** file.
+#### Fine-tuning yours
+```
+git clone <this repository>
+pip install -r requirements.txt
+```
 
-Then clone the repository:
+1. Preparing [the dataset](./dataset)
+2. Start fine-tuning model: `python train.py --model_select distilgpt2` 
+3. After fine-tuning, the model will be saved to `./model/distilgpt2_fine_tuned_coder/0_GPTSingleHead` which is exactly the fine-tuned version as provided in Ready-to-go Interaction.
 
-git clone https://github.com/aditya2029/genre-storygenerator
+\* For more params setting of training, `python train.py -h`
 
-Run the web application by:
+### Generative examples
+Good Python generation examples by fine-tuned GPT2-medium
+```python
+-------------Example 1--------------------------------------
+Context code: def factorial
+Generated: 
+def factorial(n):
+    return 1 if n == 1 else n * factorial(n - 1)
 
-python3 -m main
+--------------Example 2-------------------------------------
+Context code: def sum_of_series(num_of_terms:int, power: int)
+Generated:
+def sum_of_series(num_of_terms:int, power: int) -> float:
+    """Calculate Sum of Series.
+    >>> sum_of_series(1, 1, 10)
+    55.0
+    >>> sum_of_series(1, 10, 100)
+    49600.0
+    """
+    sum = (num_of_terms / 2) * power
+    return sum
 
-### Acknowledgement:
+--------------Example 3-------------------------------------
+Context code: def quick_sort(collection)
+Generated:
+def quick_sort(collection):
+    """
+    >>> quick_sort([0, 5, 3, 2, 2])
+    [0, 2, 2, 3, 5]
+    >>> quick_sort([])
+    []
+    >>> quick_sort([-2, -5, -45])
+    [-45, -5, -2]
+    """
+    length = len(collection)
+    if length <= 1:
+        return collection
+    else:
+        # Use the last element as the first pivot
+        pivot = collection.pop()
+        # Put elements greater than pivot in greater list
+        # Put elements lesser than pivot in lesser list
+        greater, lesser = [], []
+        for element in collection:
+            if element > pivot:
+                ...
+```
+Good Java generation examples by fine-tuned GPT2-medium
 
-This project is a part of NLP Crash Crouse by AI Camp (https://www.ai-camp.org/)
+```javascript
+--------------Example 1-------------------------------------
+Context code: Scanner input= new Scanner(System.in)
+Generated:
+Scanner input= new Scanner(System.in)
+System.out.println("Enter the Octal number: ");
+// Take octal number as input from user in a string
+String oct = input.next();
+
+--------------Example 2-------------------------------------
+Context code: private static int CountCharacters(String str)
+Generated:
+private static int CountCharacters(String str) {
+        return str.replaceAll("\\s", "").length();
+}
+```
+\* Although some generated examples look good, it needs to take a grain of salt to judge the model's actual performance. The model may simply **"remembers"** existing code in the training set well.
+
+### TODO list
+- Expand the dataset (and construct the dataset more carefeully) and increase context window. Try larger generative models like GPT-2 large or even [GPT-3 variants](https://arxiv.org/abs/2005.14165) as proposed recently if the computational resources are allowed.
+- Remove overlapping between training examples and dev examples for contamination studies. That says, to what extent the model memorizes examples rigidly or [at surface heuristics level during training](https://arxiv.org/pdf/1902.01007.pdf).
+- Try some adversarial examples (more complicated for model's reasoning capability testing purpose) to test the robustness of the model.
+- Integrate this into real-life use case such as a code editor - [Sublime Text](https://www.sublimetext.com/), where a threshold of joint probability may need to be studied for code snippet recommendations.
+- Try some ideas of location-aware code generation. For example, if a human coder is sitting writing a comment, the autocoder should be aware of the coder's context (left and right if available) to help complete the corresponding content.
+- Model size and inference efficiency is a problem in real-life use cases.
+- Do research in this problem domain to grab a general idea of what work has done in the literature for this particular problem.
+
+
+
+### Extra notes
+* For mutli-GPU training, it only works when torch==1.4.0. It will be not working when torch==1.5.0. No idea so far how to fix this issue.
