@@ -6,7 +6,7 @@
 
 <a href="https://drive.google.com/drive/folders/1-H_AeVwm7lJxVTs-c4kwzRtMvXlNGUTC"><img src="https://img.shields.io/badge/model-download-blue" alt="Contributions welcome" data-canonical-src="https://img.shields.io/badge/dataset-download-green" style="max-width:100%;"></a> <a href="https://opensource.org/licenses/apache" rel="nofollow"></a>
 
-#### The Wireless Wingman is designed to take a simple prompt and to expand on that, so, for example, one can input “int sortArray(array)” and it will create code that follows that theme. [pre-trained GPT-2 variants](https://huggingface.co/transformers/pretrained_models.html) offered by the awesome [🤗 transformers](https://github.com/huggingface/transformers) library.
+#### The Wireless Wingman is designed to take a simple prompt and to expand on that. With dataset scraped from [The Algorithm] repository (https://github.com/TheAlgorithms), our model does not only trained with pre-written algorithm but also mimic the coding style written by professional programmers. The [pre-trained GPT-2 variants](https://huggingface.co/transformers/pretrained_models.html) are offered by the awesome [🤗 transformers](https://github.com/huggingface/transformers) library and [tenserflow] (https://www.tensorflow.org/).
 
 
 ### Features
